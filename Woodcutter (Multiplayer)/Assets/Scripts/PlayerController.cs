@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed;
     public float JumpForce;
 
+    public GameObject Bulletobject;
+    public Transform FirePos;
 
     public bool isGrounded = false;
     public Transform groundCheckCollider; //empty object tas kaag mo sa baba akng player postion
@@ -117,7 +119,25 @@ public class PlayerController : MonoBehaviour
 
 
 
+    void fireball()
+    {
+       //  GameObject obj = PhotonNetwork.Instantiate(Bulletobject.name, new Vector2(FirePos.transform.position.x, FirePos.transform.position.y), Quaternion.identity, 0);
 
+
+           if (sr.flipX == false)
+        {
+            GameObject obj = PhotonNetwork.Instantiate(Bulletobject.name, new Vector2(FirePos.transform.position.x, FirePos.transform.position.y), Quaternion.identity, 0);
+           
+        }
+        if (sr.flipX == true)
+        {
+            GameObject obj = PhotonNetwork.Instantiate(Bulletobject.name, new Vector2(FirePos.transform.position.x, FirePos.transform.position.y), Quaternion.identity, 0);
+            obj.GetComponent<PhotonView>().RPC("ChangeDir_left", PhotonTargets.AllBuffered);
+        } 
+
+
+
+    }
 
 
     private void CheckInput()
@@ -144,16 +164,21 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
         }
 
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            fireball();
+            anim.SetTrigger("fireball");
+        }
     }
 
- [PunRPC]
-  private void FlipTrue()
+    [PunRPC]
+     private void FlipTrue()
     {
         sr.flipX = true;
     }
      
- [PunRPC]
-private void FlipFalse()
+    [PunRPC]
+    private void FlipFalse()
     {
         sr.flipX = false;
     }

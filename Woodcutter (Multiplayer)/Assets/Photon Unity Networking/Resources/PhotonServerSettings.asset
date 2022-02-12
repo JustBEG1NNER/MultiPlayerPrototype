@@ -46,4 +46,9 @@ MonoBehaviour:
   - FlipFalse
   - FlipTrue
   - SendMessage
+  - ChangeDir_left
+  - Destroyobject
+  - Reducehealth
+  - DestroyObject
+  - ReduceHealth
   DisableAutoOpenWizard: 1

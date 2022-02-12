@@ -1696,6 +1696,8 @@ MonoBehaviour:
   IsGrounded: 0
   MoveSpeed: 0
   JumpForce: 0
+  Bulletobject: {fileID: 0}
+  FirePos: {fileID: 0}
   isGrounded: 0
   groundCheckCollider: {fileID: 0}
   Floor:
