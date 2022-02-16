@@ -51,4 +51,5 @@ MonoBehaviour:
   - Reducehealth
   - DestroyObject
   - ReduceHealth
+  - Flip
   DisableAutoOpenWizard: 1

@@ -8,6 +8,7 @@ public class GameManagerr : MonoBehaviour
     public GameObject PlayerPrefab;
     public GameObject GameCanvas;
     public GameObject SceneCamera;
+  
     public Text PingText;
 
     public GameObject disconnectUI;
@@ -43,8 +44,10 @@ public class GameManagerr : MonoBehaviour
     {
         float randomValue = Random.Range(-1f, 1f);
         PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
+       
         GameCanvas.SetActive(false);
         SceneCamera.SetActive(true);
+      
     }
 
     public void LeaveRoom()

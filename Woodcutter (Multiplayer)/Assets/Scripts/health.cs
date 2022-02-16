@@ -29,7 +29,7 @@ public class health : Photon.MonoBehaviour
         {
             HPslider.value -= damage;
             Debug.Log("hurt me");
-            anim.SetTrigger("hurt");
+           anim.SetTrigger("hurt");
 
             if (HPslider.value <= 0)
             {
@@ -40,6 +40,7 @@ public class health : Photon.MonoBehaviour
         {
             HPslider.value -= damage;
             Debug.Log("hurt other");
+            anim.SetTrigger("hurt");
         }
         
 

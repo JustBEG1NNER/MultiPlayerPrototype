@@ -19,7 +19,7 @@ public class ChatManager : MonoBehaviour
     public bool chatSend = false;
     public bool typing = false;
 
-   
+    public bool chatButton;
 
 
     private void Awake()
@@ -57,25 +57,27 @@ public class ChatManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 //  ChatInputField.gameObject.SetActive(true);
-                Debug.Log(" outer loop ");
+              //  Debug.Log(" outer loop ");
 
                 if (!typing)
                 {
-                    Debug.Log(" select and set true input field ");
+                 //   Debug.Log(" select and set true input field ");
                     ChatInputField.gameObject.SetActive(true);
             
                     ChatInputField.ActivateInputField();
                     ChatInputField.Select();
                     chatSend = false;
                     typing = true;
+                 //   chatButton = true;
 
                 }
                 else if (typing)
                 {
-                    Debug.Log("input field false, ");
+                  //  Debug.Log("input field false, ");
                     ChatInputField.gameObject.SetActive(false);
                     chatSend = true;
                     typing = false;
+                  //  chatButton = false;
                 }
 
 
@@ -91,11 +93,15 @@ public class ChatManager : MonoBehaviour
                     typing = false;
 
                 }
+
+                 if (chatSend)
+                    chatButton = false;
                  */
 
 
                 //Detect when the Return key is pressed down
             }
+
 
         }
 
@@ -105,7 +111,30 @@ public class ChatManager : MonoBehaviour
   
 
 
+    public void chatButton_Pressed()
+    {
+        if (!chatButton)
+        {
+            //   Debug.Log(" select and set true input field ");
+            ChatInputField.gameObject.SetActive(true);
 
+            ChatInputField.ActivateInputField();
+            ChatInputField.Select();
+            chatSend = false;
+            chatButton = true;
+            //   chatButton = true;
+
+        }
+        else if (chatButton)
+        {
+            //  Debug.Log("input field false, ");
+            ChatInputField.gameObject.SetActive(false);
+            chatSend = true;
+            chatButton = false;
+            //  chatButton = false;
+        }
+
+    }
 
 
 
