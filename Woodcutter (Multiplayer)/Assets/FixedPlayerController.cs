@@ -38,6 +38,11 @@ public class FixedPlayerController : MonoBehaviour
     public bool jumpButton_UI;// UI >> selpon control
     public bool fireball_UI;// UI >> selpon control
 
+    public bool disableMove=false;
+
+    public float cayoteTimeCounter;
+    public float cayoteTime=1f;
+        
 
     private void Awake()
     {
@@ -52,26 +57,33 @@ public class FixedPlayerController : MonoBehaviour
         }
         else
         {
-
             PlayerNameText.text = photonView.owner.name;
             PlayerNameText.color = Color.blue;
         }
+
     }
 
     void Update()
     {
         if (photonView.isMine)
         {
-            groundCheck(); // check kung nasa daga or mayo       
-            checkInput(); //all input igdi hehe
-            moveplayer(); // for left and right
-            SpriteFlip(); //flipping sprite left and right
-            JumpFallAnim();
-
-            if (verticalMove == -1)
+        
+            health health = gameObject.GetComponent<health>();
+            
+         //   Debug.Log(health.Hp);
+            if (health.Hp > 0 && health.Hp <= 100)
             {
-                rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            }
+                //    disableMove = true;
+                groundCheck(); // check kung nasa daga or mayo       
+
+                //  if(!disableMove)
+                checkInput(); //all input igdi hehe
+
+                moveplayer(); // for left and right
+                SpriteFlip(); //flipping sprite left and right
+                JumpFallAnim();
+
+            }       
 
         }    
     }
@@ -95,27 +107,62 @@ public class FixedPlayerController : MonoBehaviour
         if (colliders.Length > 0)
         {
             isGrounded = true;
-            //  Debug.Log("nasa daga");
-        }
+            //  Debug.Log("nasa daga");      
+            
+        } 
         else
         {
             isGrounded = false;
-            //  Debug.Log("mayo sa daga");
+           
+          
+            //  Debug.Log("mayo sa daga");        
+            //   Invoke("cayote_time", cayoteTime);
         }
 
-        if (rb.velocity.y < 0)
+
+        if (isGrounded)
+        {
+            cayoteTimeCounter = cayoteTime;
+        }
+        else
+        {
+            cayoteTimeCounter -= Time.deltaTime;
+        }
+                
+
+        if(verticalMove > 0)
+        {
+            cayoteTimeCounter = 0;
+        }
+
+
+       
+
+
+
+
+        if (rb.velocity.y < 0 && cayoteTimeCounter <= 0) 
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-         //     Debug.Log("falling");
+              Debug.Log("falling");
         }
-        else if (rb.velocity.y > 0 && !Input.GetKeyDown(KeyCode.Space))
+        else if (rb.velocity.y > 0 && !Input.GetKeyDown(KeyCode.Space) || !jumpButton_UI)
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
            //    Debug.Log("going Up");
         }
 
+        if (verticalMove == -1 && cayoteTimeCounter < 0)
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+    //
+       
     }
 
+
+  
+//
     private void checkInput() // for pc
     {
    
@@ -128,7 +175,7 @@ public class FixedPlayerController : MonoBehaviour
             moveleft = false;
         }
         /////////////////////////////////////
-        if (moveRight_UI) //Input.GetKey("d") || 
+        if ( moveRight_UI) //Input.GetKey("d") || 
         {
             moveright = true;
         }
@@ -144,9 +191,9 @@ public class FixedPlayerController : MonoBehaviour
         fireball_UI = false;
         
 
-        if (  jumpButton_UI) //Input.GetKeyDown(KeyCode.Space)|| 
+        if ( jumpButton_UI) //Input.GetKeyDown(KeyCode.Space)|| 
         {
-            if (isGrounded)
+            if (cayoteTimeCounter>0)
             {
                 rb.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
             }
@@ -156,6 +203,7 @@ public class FixedPlayerController : MonoBehaviour
 
         }
 
+   //    
     }
     
     public void fireball()
@@ -215,7 +263,7 @@ public class FixedPlayerController : MonoBehaviour
         else
             horizontalMove = 0;
 
-
+       
         if (horizontalMove > 0 || horizontalMove < 0)
         {
             anim.SetBool("isRunning", true);

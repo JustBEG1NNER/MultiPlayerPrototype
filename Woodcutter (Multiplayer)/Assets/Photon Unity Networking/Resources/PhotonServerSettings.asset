@@ -52,4 +52,6 @@ MonoBehaviour:
   - DestroyObject
   - ReduceHealth
   - Flip
+  - dead
+  - Respawn
   DisableAutoOpenWizard: 1

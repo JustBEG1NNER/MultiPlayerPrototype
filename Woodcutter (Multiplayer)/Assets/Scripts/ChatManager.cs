@@ -14,6 +14,7 @@ public class ChatManager : MonoBehaviour
     public GameObject BubbleSpeechobject;
     public Text UpdatedText;
     private InputField ChatInputField;
+
     private bool DisableSend;
 
     public bool chatSend = false;
@@ -27,6 +28,7 @@ public class ChatManager : MonoBehaviour
         ChatInputField = GameObject.Find("ChatInputField").GetComponent<InputField>();
         ChatInputField.gameObject.SetActive(false);
     }
+
     private void Update()
     {
         if (photonView.isMine)
@@ -34,17 +36,12 @@ public class ChatManager : MonoBehaviour
             if (!DisableSend) //&& ChatInputField.isFocused
             {
                 if (ChatInputField.text != "" && ChatInputField.text.Length > 0 && chatSend)
-                {
-                    // Input.GetKeyDown(KeyCode.Period)
-
+                {                
                     photonView.RPC("SendMessage", PhotonTargets.AllBuffered, ChatInputField.text);
                     BubbleSpeechobject.SetActive(true);
 
-
                     DisableSend = true;
-
                     chatSend = false;
-
                 }
             }
 
@@ -56,55 +53,26 @@ public class ChatManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                //  ChatInputField.gameObject.SetActive(true);
-              //  Debug.Log(" outer loop ");
-
+             
                 if (!typing)
-                {
-                 //   Debug.Log(" select and set true input field ");
+                {              
                     ChatInputField.gameObject.SetActive(true);
             
                     ChatInputField.ActivateInputField();
                     ChatInputField.Select();
                     chatSend = false;
                     typing = true;
-                 //   chatButton = true;
-
+                
                 }
                 else if (typing)
-                {
-                  //  Debug.Log("input field false, ");
+                {                
                     ChatInputField.gameObject.SetActive(false);
                     chatSend = true;
                     typing = false;
-                  //  chatButton = false;
-                }
-
-
-
-                /*
-                if (ChatInputField.text.Length > 0)
-                {
-                    typing = true;
-                }
-                if (ChatInputField.text.Length <= 0)
-                {
-               //     ChatInputField.Select();
-                    typing = false;
-
-                }
-
-                 if (chatSend)
-                    chatButton = false;
-                 */
-
-
-                //Detect when the Return key is pressed down
+                 
+                }            
             }
-
-
         }
-
     }
 
    
@@ -114,26 +82,21 @@ public class ChatManager : MonoBehaviour
     public void chatButton_Pressed()
     {
         if (!chatButton)
-        {
-            //   Debug.Log(" select and set true input field ");
+        {        
             ChatInputField.gameObject.SetActive(true);
-
             ChatInputField.ActivateInputField();
             ChatInputField.Select();
             chatSend = false;
             chatButton = true;
-            //   chatButton = true;
-
+        
         }
         else if (chatButton)
-        {
-            //  Debug.Log("input field false, ");
+        {        
             ChatInputField.gameObject.SetActive(false);
             chatSend = true;
             chatButton = false;
-            //  chatButton = false;
+            
         }
-
     }
 
 
@@ -141,9 +104,7 @@ public class ChatManager : MonoBehaviour
 
     [PunRPC]
     private void SendMessage(string message)
-    {
-      
-
+    {   
         UpdatedText.text = message;
         ChatInputField.text = "";
         StartCoroutine("Remove");
@@ -151,11 +112,9 @@ public class ChatManager : MonoBehaviour
     }
     IEnumerator Remove()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
         BubbleSpeechobject.SetActive(false);
-        DisableSend = false;
-
-       
+        DisableSend = false;  
     }
 
 

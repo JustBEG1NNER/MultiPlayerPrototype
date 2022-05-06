@@ -5,12 +5,8 @@ using UnityEngine;
 public class sampleBullet : Photon.MonoBehaviour
 {
     private Rigidbody2D rb;
-
     public float Fireballspeed = 20f;
-
     public int Fireballdamage = 10;
-
-
 
 
 
@@ -18,14 +14,13 @@ public class sampleBullet : Photon.MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = transform.right * Fireballspeed;
-
-        Invoke("DoSomething", 3);//this will happen after 2 seconds
+        Invoke("DestroyFireball", 1);//this will happen after 2 seconds
     }
-    void DoSomething()
+
+    void DestroyFireball()
     {
         this.GetComponent<PhotonView>().RPC("DestroyObject", PhotonTargets.AllBuffered);
     }
-
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,14 +34,12 @@ public class sampleBullet : Photon.MonoBehaviour
             if (target.tag == "Player")
             {
                 target.RPC("ReduceHealth", PhotonTargets.AllBuffered, Fireballdamage);
-                Debug.Log("player hit");
+                Debug.Log(" hit" + collision.name);
             }
-
-            this.GetComponent<PhotonView>().RPC("DestroyObject", PhotonTargets.AllBuffered);
+           
         }
 
-      
-
+        this.GetComponent<PhotonView>().RPC("DestroyObject", PhotonTargets.AllBuffered);
     }
 
     [PunRPC]

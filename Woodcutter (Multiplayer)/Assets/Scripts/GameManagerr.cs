@@ -8,14 +8,12 @@ public class GameManagerr : MonoBehaviour
     public GameObject PlayerPrefab;
     public GameObject GameCanvas;
     public GameObject SceneCamera;
-  
-    public Text PingText;
-
-    public GameObject disconnectUI;
-    private bool Off = false;
-
     public GameObject PlayerFeed;
     public GameObject FeedGrid;
+    public GameObject disconnectUI;
+    public Text PingText;
+    private bool Off = false;
+
 
     private void Awake()
     {
